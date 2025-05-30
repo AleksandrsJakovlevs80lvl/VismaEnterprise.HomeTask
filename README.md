@@ -10,3 +10,7 @@
 
     1. Angular
     2. Run the build-and-run.ps1 script in the client folder
+
+The application will be available on http://localhost:8081.
+
+The admin user will already exist with username Admin and password Admin.
