@@ -1,0 +1,64 @@
+<div class="container mt-4">
+  <div class="header-container position-relative mb-3">    
+    <button (click)="logout()" class="btn-back position-absolute start-0">
+      <i class="bi bi-box-arrow-left"></i>
+      Logout
+    </button>
+    <h2 class="text-center mx-auto">Book Catalogue</h2>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="!errorMessage && books.length === 0" class="alert alert-info" role="alert">
+    No books yet...
+  </div>  <table *ngIf="books.length > 0" class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Year</th>
+        <th>Genre</th>
+        <th>Mark</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody> 
+      <tr *ngFor="let book of books">        
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.publishedYear }}</td>
+        <td>{{ book.genre }}</td>
+        <td>
+          <span class="text-warning">
+            <i class="bi bi-star-fill" *ngFor="let star of [].constructor(book.mark)"></i>
+          </span>
+        </td>        <td>
+          <div class="action-buttons">
+            <button class="btn-edit" (click)="showEditBookForm(book)" [disabled]="isDeletingBook || showAddBookModal">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn-delete" (click)="deleteBook(book.publicId!)" [disabled]="isDeletingBook || showAddBookModal">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container position-relative d-flex justify-content-end">
+  <button (click)="showAddBookForm()" class="btn-add-book" [disabled]="showAddBookModal">
+    <i class="bi bi-plus-circle"></i>
+    Add new book
+  </button>
+</div>
+
+<app-add-book-modal 
+  [isVisible]="showAddBookModal"
+  [editMode]="isEditMode"
+  [bookToEdit]="selectedBook"
+  (closeModal)="handleModalClose()" 
+  (bookAdded)="handleBookAdded($event)"
+  (bookUpdated)="handleBookUpdated($event)">
+</app-add-book-modal>

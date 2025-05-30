@@ -1,0 +1,119 @@
+<!-- Professional Add Book Modal -->
+<div *ngIf="isVisible" class="modal-backdrop" [class.show]="isVisible"></div>
+<div *ngIf="isVisible" class="modal" [class.show]="isVisible" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3 class="modal-title" id="addBookModalLabel">{{ modalTitle }}</h3>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form [formGroup]="addBookForm" (ngSubmit)="onAddBookSubmit()">          <!-- Title Field -->
+          <div class="mb-4">
+            <div class="form-group">
+              <label for="title" class="form-label">Title</label>
+              <input 
+                type="text" 
+                id="title" 
+                formControlName="Title" 
+                class="form-control" 
+                placeholder="Enter book title" 
+                autocomplete="off"
+                [title]="editMode ? 'Title cannot be modified when editing a book' : ''"
+              >
+              <div *ngIf="addBookForm.get('Title')?.invalid && (addBookForm.get('Title')?.dirty || addBookForm.get('Title')?.touched)" class="invalid-feedback d-block">
+                Title is required
+              </div>
+              <div *ngIf="editMode" class="text-muted field-hint">
+                <small><i class="bi bi-info-circle"></i> Title cannot be modified when editing</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Author Field -->
+          <div class="mb-4">
+            <div class="form-group">
+              <label for="author" class="form-label">Author</label>
+              <input 
+                type="text" 
+                id="author" 
+                formControlName="Author" 
+                class="form-control" 
+                placeholder="Enter author's name"
+                autocomplete="off"
+                [title]="editMode ? 'Author cannot be modified when editing a book' : ''"
+              >
+              <div *ngIf="addBookForm.get('Author')?.invalid && (addBookForm.get('Author')?.dirty || addBookForm.get('Author')?.touched)" class="invalid-feedback d-block">
+                Author is required
+              </div>
+              <div *ngIf="editMode" class="text-muted field-hint">
+                <small><i class="bi bi-info-circle"></i> Author cannot be modified when editing</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Published Year and Genre in a row -->
+          <div class="row mb-4">
+            <div class="col-md-6 mb-md-0 mb-4">
+              <div class="form-group">
+                <label for="publishedYear" class="form-label">Year</label>
+                <input 
+                  type="number" 
+                  id="publishedYear" 
+                  formControlName="PublishedYear" 
+                  class="form-control" 
+                  placeholder="e.g., 2023"
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="genre" class="form-label">Genre</label>
+                <input 
+                  type="text" 
+                  id="genre" 
+                  formControlName="Genre" 
+                  class="form-control" 
+                  placeholder="e.g., Fantasy"
+                  autocomplete="off"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Rating Field -->
+          <div class="mb-4">
+            <div class="form-group">
+              <label for="mark" class="form-label">Rating</label>
+              <input 
+                type="number" 
+                id="mark" 
+                formControlName="Mark" 
+                class="form-control" 
+                placeholder="Rate from 1 to 5" 
+                min="1" 
+                max="5"
+              >
+            </div>
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="addBookError" class="alert alert-danger mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ addBookError }}
+          </div>
+            <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" (click)="closeModal.emit()" class="btn btn-outline-secondary">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="addBookForm.invalid" class="btn btn-primary">
+              <i class="bi bi-book"></i>{{ submitButtonText }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
